@@ -3,34 +3,21 @@ import './App.css';
 import Person from './Person/Person'
 
 const App = props => {
+    let personJsx = null;
     const [visibilityPerson, setVisibilityPerson] = useState(true);
     const [personsState, setPersonsState] =  useState({
             persons: [
-                { name: 'Joao', age: 14},
-                { name: 'Pedro', age: 19},
-                { name: 'Paulo', age: 23},
+                { id: 1, name: 'Joao', age: 14},
+                { id: 2,name: 'Pedro', age: 19},
+                { id: 3,name: 'Paulo', age: 23},
             ]
         }
     );
 
-    const switchNameHandler = (newName) => {
-        setPersonsState({
-            persons: [
-                { name: newName, age: 11},
-                { name: 'Pedro', age: 12},
-                { name: 'Jose', age: 28},
-            ]
-        });
-    };
-
-    const nameChangeHandler = (event) => {
-        setPersonsState({
-            persons: [
-                { name: event.target.value, age: 11},
-                { name: 'Pedro', age: 12},
-                { name: 'Jose', age: 28},
-            ]
-        });
+    const deletePersonHandler = (personIndex) => {
+        var persons = [...personsState.persons];
+        persons.splice(personIndex, 1);
+        setPersonsState({persons: persons});
     };
 
     const togglePersonHandler = () => {
@@ -45,33 +32,29 @@ const App = props => {
         cursor: 'pointer'
     };
 
+    if(visibilityPerson){
+        personJsx = (
+            <div>
+                {
+                    personsState.persons.map((person, index) => {
+                        return <Person key={person.id}
+                                       click={() => deletePersonHandler(index)}
+                                       name={person.name}
+                                       age={person.age}/>
+                    })
+                }
+            </div>
+        );
+    }
+
     return (
         <div className="App">
             <h1>Hi, my 1st React app</h1>
 
             <button
                 style={style}
-                onClick={switchNameHandler.bind(this, 'Gustavo')}>Switch Name</button>
-
-            <button
-                style={style}
                 onClick={togglePersonHandler}>Toggle Visibility</button>
-
-            { visibilityPerson ?
-                <div>
-                    <Person click={switchNameHandler.bind(this, 'Joao')}
-                            name={personsState.persons[0].name}
-                            age={personsState.persons[0].age}
-                            change={nameChangeHandler}/>
-
-                    <Person name={personsState.persons[1].name}
-                    age={personsState.persons[1].age}>My hobbie: Surf</Person>
-                    <Person name={personsState.persons[2].name}
-                    age={personsState.persons[2].age}/>
-                </div>
-                : <p>Nothing</p>
-            }
-
+            {personJsx}
         </div>
     );
 };
