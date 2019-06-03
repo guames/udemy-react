@@ -14,6 +14,23 @@ const App = props => {
         }
     );
 
+    const nameChangeHandler = (event, personId) => {
+
+        var personIndex = personsState.persons.findIndex(p => {
+            return p.id === personId;
+        })
+        var person ={...personsState.persons[personIndex]};
+
+        person.name = event.target.value;
+
+        var persons = [...personsState.persons];
+
+        persons[personIndex] = person;
+
+        setPersonsState({persons: persons})
+
+    };
+
     const deletePersonHandler = (personIndex) => {
         var persons = [...personsState.persons];
         persons.splice(personIndex, 1);
@@ -39,6 +56,7 @@ const App = props => {
                     personsState.persons.map((person, index) => {
                         return <Person key={person.id}
                                        click={() => deletePersonHandler(index)}
+                                       changed={(event) => nameChangeHandler(event, person.id)}
                                        name={person.name}
                                        age={person.age}/>
                     })
