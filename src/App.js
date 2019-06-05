@@ -42,7 +42,7 @@ const App = props => {
     };
 
     const style ={
-        backgroundColor: 'white',
+        backgroundColor: 'red',
         font: 'inherit',
         border: '1px solid blue',
         padding: '8px',
@@ -63,6 +63,7 @@ const App = props => {
                 }
             </div>
         );
+        style.backgroundColor = 'green';
     }
 
     return (
